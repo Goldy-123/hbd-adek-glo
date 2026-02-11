@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Selamat Ulang Tahun Glory 🎂</title>
+
+<style>
+:root{
+  --pink:#f7c6d9;
+  --blue:#c6e7f7;
+  --yellow:#fff1c1;
+  --green:#c6f7e2;
+  --purple:#d9c6f7;
+}
+
+body{
+  margin:0;
+  min-height:100vh;
+  background:linear-gradient(135deg,var(--pink),var(--blue));
+  font-family:'Poppins','Comic Sans MS',sans-serif;
+  overflow:hidden;
+}
+
+.container{
+  text-align:center;
+  padding-top:30px;
+}
+
+h1{color:#6b4eff;margin-bottom:6px;}
+#instruction{color:#555}
+
+/* ===== AREA KUE ===== */
+.cake-area{
+  margin-top:25px;
+  height:260px;
+  display:flex;
+  justify-content:center;
+  position:relative;
+}
+
+.cake{
+  width:220px;
+  position:relative;
+}
+
+/* ===== LAYER ===== */
+.layer{
+  width:220px;
+  height:55px;
+  border-radius:16px;
+  margin-top:6px;
+  opacity:0;
+  transform:translateY(-120px);
+  transition:all .6s ease;
+}
+
+.layer.show{
+  opacity:1;
+  transform:translateY(0);
+}
+
+.layer1{background:var(--yellow);}
+.layer2{background:var(--green);}
+.layer3{background:var(--purple);}
+
+/* ===== LILIN ===== */
+.candles{
+  position:absolute;
+  top:-55px;
+  left:50%;
+  transform:translateX(-50%);
+  display:none;
+  gap:16px;
+  cursor:pointer;
+}
+
+.candle{
+  width:22px;
+  height:45px;
+  background:#ff8fab;
+  border-radius:8px;
+  position:relative;
+}
+
+.face{
+  position:absolute;
+  top:14px;
+  left:0;
+  right:0;
+  font-size:10px;
+}
+.face::before{content:"• •";}
+.face::after{content:"ᴗ";display:block;margin-top:-2px;}
+
+.flame{
+  width:14px;
+  height:14px;
+  background:orange;
+  border-radius:50%;
+  position:absolute;
+  top:-14px;
+  left:4px;
+  animation:flicker .2s infinite;
+}
+
+@keyframes flicker{
+  50%{transform:scale(1.2);}
+}
+
+/* ===== FINAL ===== */
+.final{
+  position:fixed;
+  inset:0;
+  display:none;
+  justify-content:center;
+  align-items:center;
+  flex-direction:column;
+  background:linear-gradient(135deg,var(--pink),var(--blue));
+  animation:fadeIn 1s ease forwards;
+}
+
+.photo{
+  width:230px;
+  border-radius:22px;
+  box-shadow:0 0 40px rgba(255,255,255,.9);
+}
+
+.text{
+  margin-top:18px;
+  font-size:20px;
+  color:#6b4eff;
+  min-height:30px;
+}
+
+@keyframes fadeIn{
+  from{opacity:0;}
+  to{opacity:1;}
+}
+
+/* ===== CONFETTI ===== */
+.confetti{
+  position:fixed;
+  width:10px;
+  height:10px;
+  animation:fall 3s linear forwards;
+}
+
+@keyframes fall{
+  to{transform:translateY(100vh) rotate(360deg);}
+}
+
+/* ===== BALON ===== */
+.balloon{
+  position:fixed;
+  bottom:-80px;
+  width:40px;
+  height:55px;
+  border-radius:50%;
+  animation:rise 6s linear forwards;
+}
+
+@keyframes rise{
+  to{transform:translateY(-120vh);}
+}
+
+/* ===== FADE OUT ===== */
+.fade-out{
+  animation:fadeOut 3s ease forwards;
+}
+
+@keyframes fadeOut{
+  to{opacity:0;}
+}
+</style>
+</head>
+
+<body>
+
+<div class="container" id="main">
+  <h1>🎉 Selamat Ulang Tahun Adek Glory 🎉</h1>
+  <p id="instruction">Klik untuk menjatuhkan kue 🎂</p>
+
+  <div class="cake-area">
+    <div class="cake">
+
+      <!-- LILIN -->
+      <div class="candles" id="candles">
+        <div class="candle">
+          <div class="flame"></div>
+          <div class="face"></div>
+        </div>
+        <div class="candle">
+          <div class="flame"></div>
+          <div class="face"></div>
+        </div>
+      </div>
+
+      <!-- 3 LAYER -->
+      <div class="layer layer3"></div>
+      <div class="layer layer2"></div>
+      <div class="layer layer1"></div>
+
+    </div>
+  </div>
+</div>
+
+<!-- FINAL -->
+<div class="final" id="final">
+  <img src="foto-adek.jpeg" class="photo">
+  <div class="text" id="typing"></div>
+</div>
+
+<audio id="music" src="happy-birthday.mp3"></audio>
+<audio id="pop" src="pop.mp3"></audio>
+
+<script>
+const layers = document.querySelectorAll('.layer');
+const candles = document.getElementById('candles');
+const instruction = document.getElementById('instruction');
+const flames = document.querySelectorAll('.flame');
+const final = document.getElementById('final');
+const typing = document.getElementById('typing');
+const music = document.getElementById('music');
+const pop = document.getElementById('pop');
+const main = document.getElementById('main');
+
+let step = 0;
+
+/* ===== KLIK KUE ===== */
+document.body.addEventListener('click', () => {
+  if(step < 3){
+    layers[step].classList.add('show');
+    pop.currentTime = 0;
+    pop.play();
+    step++;
+
+    if(step === 3){
+      instruction.innerText = 'Klik sekali lagi untuk menyalakan lilin 🕯️';
+    }
+  }
+  else if(step === 3){
+    candles.style.display = 'flex';
+    instruction.innerText = 'Klik lilin untuk meniup apinya 🔥';
+    step = 4;
+  }
+});
+
+/* ===== KLIK LILIN ===== */
+candles.addEventListener('click', (e) => {
+  e.stopPropagation();
+
+  flames.forEach(f => f.style.display = 'none');
+  instruction.style.display = 'none';
+
+  // MUSIK HARUS DI SINI (AKSI USER)
+  music.currentTime = 0;
+  music.play();
+
+  showFinal();
+});
+
+/* ===== FINAL ===== */
+function showFinal(){
+  final.style.display = 'flex';
+  confetti();
+  balloons();
+  typeText("Selamat ulang tahun yang ke-12 ya Glory 💖");
+
+  setTimeout(() => {
+    main.classList.add('fade-out');
+  }, 12000);
+}
+
+/* ===== TEXT TYPING ===== */
+function typeText(text){
+  typing.innerText = '';
+  let i = 0;
+  const t = setInterval(()=>{
+    typing.innerText += text[i];
+    i++;
+    if(i >= text.length) clearInterval(t);
+  }, 80);
+}
+
+/* ===== CONFETTI ===== */
+function confetti(){
+  for(let i=0;i<25;i++){
+    const c=document.createElement('div');
+    c.className='confetti';
+    c.style.left=Math.random()*100+'vw';
+    c.style.background=`hsl(${Math.random()*360},100%,70%)`;
+    document.body.appendChild(c);
+    setTimeout(()=>c.remove(),3000);
+  }
+}
+
+/* ===== BALON ===== */
+function balloons(){
+  for(let i=0;i<6;i++){
+    const b=document.createElement('div');
+    b.className='balloon';
+    b.style.left=Math.random()*100+'vw';
+    b.style.background=`hsl(${Math.random()*360},80%,80%)`;
+    document.body.appendChild(b);
+    setTimeout(()=>b.remove(),6000);
+  }
+}
+</script>
+
+</body>
+</html>
